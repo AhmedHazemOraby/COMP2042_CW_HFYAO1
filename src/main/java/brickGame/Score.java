@@ -1,13 +1,15 @@
 package brickGame;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-//import sun.plugin2.message.Message;
+import javafx.util.Duration;
 
 public class Score {
+    // Show the score label on the screen
     public void show(final double x, final double y, int score, final Main main) {
         String sign;
         if (score >= 0) {
@@ -25,6 +27,24 @@ public class Score {
                 main.root.getChildren().add(label);
             }
         });
+
+        // Gradually fade away the label over time using a FadeTransition
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), label);
+        fadeTransition.setFromValue(1.0);
+        fadeTransition.setToValue(0.0);
+        fadeTransition.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // Remove the label from the scene when the fade transition is finished
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        main.root.getChildren().remove(label);
+                    }
+                });
+            }
+        });
+        fadeTransition.play();
 
         new Thread(new Runnable() {
             @Override
