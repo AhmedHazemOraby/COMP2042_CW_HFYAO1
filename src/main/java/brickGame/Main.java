@@ -186,32 +186,44 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
     private void initBoard() {
+        // Create a Random instance for generating random numbers
+        Random random = new Random();
+
+        // Iterate over rows
         for (int i = 0; i < 4; i++) {
+            // Iterate over columns
             for (int j = 0; j < level + 1; j++) {
-                int r = new Random().nextInt(500);
-                if (r % 5 == 0) {
-                    continue;
-                }
+                // Generate a random number between 0 and 9 (inclusive)
+                int r = random.nextInt(10);
+
+                // Determine the type of block based on the random number
                 int type;
-                if (r % 10 == 1) {
+                if (r == 1) {
+                    // 10% chance for BLOCK_CHOCO
                     type = Block.BLOCK_CHOCO;
-                } else if (r % 10 == 2) {
+                } else if (r == 2) {
+                    // 10% chance for BLOCK_HEART if it doesn't exist, otherwise BLOCK_NORMAL
                     if (!isExistHeartBlock) {
                         type = Block.BLOCK_HEART;
                         isExistHeartBlock = true;
                     } else {
                         type = Block.BLOCK_NORMAL;
                     }
-                } else if (r % 10 == 3) {
+                } else if (r == 3) {
+                    // 10% chance for BLOCK_STAR
                     type = Block.BLOCK_STAR;
                 } else {
+                    // 70% chance for BLOCK_NORMAL
                     type = Block.BLOCK_NORMAL;
                 }
-                blocks.add(new Block(j, i, colors[r % (colors.length)], type));
-                //System.out.println("colors " + r % (colors.length));
+
+                // Create a new Block and add it to the list
+                blocks.add(new Block(j, i, colors[random.nextInt(colors.length)], type));
             }
         }
     }
+
+
 
 
     public static void main(String[] args) {
