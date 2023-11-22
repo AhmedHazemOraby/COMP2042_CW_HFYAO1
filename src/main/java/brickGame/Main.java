@@ -15,12 +15,12 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Main extends Application implements EventHandler<KeyEvent>, GameEngine.OnAction {
+
 
 
     private int level = 0;
@@ -90,6 +90,16 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     Stage  primaryStage;
     Button load    = null;
     Button newGame = null;
+
+    @Override
+    public void onInit() {
+
+    }
+
+    @Override
+    public void onTime(long time) {
+        this.time = time;
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -643,22 +653,19 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     @Override
     public void onUpdate() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
+        Platform.runLater(() -> {
+            scoreLabel.setText("Score: " + score);
+            heartLabel.setText("Heart : " + heart);
 
-                scoreLabel.setText("Score: " + score);
-                heartLabel.setText("Heart : " + heart);
+            rect.setX(xBreak);
+            rect.setY(yBreak);
+            ball.setCenterX(xBall);
+            ball.setCenterY(yBall);
 
-                rect.setX(xBreak);
-                rect.setY(yBreak);
-                ball.setCenterX(xBall);
-                ball.setCenterY(yBall);
-
-                for (Bonus choco : chocos) {
-                    choco.choco.setY(choco.y);
-                }
+            for (Bonus choco : chocos) {
+                choco.choco.setY(choco.y);
             }
+
         });
 
 
@@ -719,44 +726,37 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
 
-    @Override
-    public void onInit() {
 
-    }
 
     @Override
     public void onPhysicsUpdate() {
-        checkDestroyedCount();
-        setPhysicsToBall();
+        Platform.runLater(() -> {
+            checkDestroyedCount();
+            setPhysicsToBall();
 
-
-        if (time - goldTime > 5000) {
-            ball.setFill(new ImagePattern(new Image("ball.png")));
-            root.getStyleClass().remove("goldRoot");
-            isGoldStauts = false;
-        }
-
-        for (Bonus choco : chocos) {
-            if (choco.y > sceneHeigt || choco.taken) {
-                continue;
+            if (time - goldTime > 5000) {
+                ball.setFill(new ImagePattern(new Image("ball.png")));
+                root.getStyleClass().remove("goldRoot");
+                isGoldStauts = false;
             }
-            if (choco.y >= yBreak && choco.y <= yBreak + breakHeight && choco.x >= xBreak && choco.x <= xBreak + breakWidth) {
-                System.out.println("You Got it and +3 score for you");
-                choco.taken = true;
-                choco.choco.setVisible(false);
-                score += 3;
-                new Score().show(choco.x, choco.y, 3, this);
+
+            for (Bonus choco : chocos) {
+                if (choco.y > sceneHeigt || choco.taken) {
+                    continue;
+                }
+                if (choco.y >= yBreak && choco.y <= yBreak + breakHeight && choco.x >= xBreak && choco.x <= xBreak + breakWidth) {
+                    System.out.println("You Got it and +3 score for you");
+                    choco.taken = true;
+                    choco.choco.setVisible(false);
+                    score += 3;
+                    new Score().show(choco.x, choco.y, 3, this);
+                }
+                choco.y += ((time - choco.timeCreated) / 1000.000) + 1.000;
             }
-            choco.y += ((time - choco.timeCreated) / 1000.000) + 1.000;
-        }
-
-        //System.out.println("time is:" + time + " goldTime is " + goldTime);
-
+        });
     }
 
 
-    @Override
-    public void onTime(long time) {
-        this.time = time;
-    }
+
+
 }
