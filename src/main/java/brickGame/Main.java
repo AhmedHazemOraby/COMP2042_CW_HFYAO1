@@ -671,7 +671,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
         if (yBall >= Block.getPaddingTop() && yBall <= (Block.getHeight() * (level + 1)) + Block.getPaddingTop()) {
             for (final Block block : blocks) {
-                int hitCode = block.checkHitToBlock(xBall, yBall);
+                int hitCode = block.checkHitToBlock(xBall, yBall, ballRadius);
                 if (hitCode != Block.NO_HIT) {
                     score += 1;
 
@@ -706,6 +706,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     if (block.type == Block.BLOCK_HEART) {
                         heart++;
                     }
+
 
                     if (hitCode == Block.HIT_RIGHT) {
                         colideToRightBlock = true;

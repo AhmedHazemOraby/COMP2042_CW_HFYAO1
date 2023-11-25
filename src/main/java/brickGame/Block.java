@@ -80,26 +80,52 @@ public class Block implements Serializable {
     }
 
 
-    public int checkHitToBlock(double xBall, double yBall) {
-
+    public int checkHitToBlock(double xBall, double yBall, double ballRadius) {
         if (isDestroyed) {
             return NO_HIT;
         }
 
-        if (xBall >= x && xBall <= x + width && yBall == y + height) {
+        double blockRight = x + width;
+        double blockBottom = y + height;
+
+        // Check collision with bottom side
+        if (yBall + ballRadius >= y && yBall - ballRadius <= blockBottom && xBall >= x && xBall <= blockRight) {
             return HIT_BOTTOM;
         }
 
-        if (xBall >= x && xBall <= x + width && yBall == y) {
+        // Check collision with top side
+        if (yBall - ballRadius <= blockBottom && yBall + ballRadius >= y && xBall >= x && xBall <= blockRight) {
             return HIT_TOP;
         }
 
-        if (yBall >= y && yBall <= y + height && xBall == x + width) {
+        // Check collision with right side
+        if (xBall + ballRadius >= x && xBall - ballRadius <= blockRight && yBall >= y && yBall <= blockBottom) {
             return HIT_RIGHT;
         }
 
-        if (yBall >= y && yBall <= y + height && xBall == x) {
+        // Check collision with left side
+        if (xBall - ballRadius <= blockRight && xBall + ballRadius >= x && yBall >= y && yBall <= blockBottom) {
             return HIT_LEFT;
+        }
+
+        // Check collision with top right corner
+        if (Math.pow(xBall - blockRight, 2) + Math.pow(yBall - y, 2) <= Math.pow(ballRadius, 2)) {
+            return HIT_TOP;
+        }
+
+        // Check collision with top left corner
+        if (Math.pow(xBall - x, 2) + Math.pow(yBall - y, 2) <= Math.pow(ballRadius, 2)) {
+            return HIT_TOP;
+        }
+
+        // Check collision with bottom right corner
+        if (Math.pow(xBall - blockRight, 2) + Math.pow(yBall - blockBottom, 2) <= Math.pow(ballRadius, 2)) {
+            return HIT_BOTTOM;
+        }
+
+        // Check collision with bottom left corner
+        if (Math.pow(xBall - x, 2) + Math.pow(yBall - blockBottom, 2) <= Math.pow(ballRadius, 2)) {
+            return HIT_BOTTOM;
         }
 
         return NO_HIT;
