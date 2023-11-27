@@ -5,7 +5,7 @@ import javafx.application.Platform;
 public class GameEngine {
 
     private OnAction onAction;
-    private int fps = 15;
+    private int fps = 60;
     private Thread gameLoopThread;
     private boolean isStopped = true;
 

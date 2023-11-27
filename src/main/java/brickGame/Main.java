@@ -328,8 +328,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private boolean colideToLeftBlock           = false;
     private boolean colideToTopBlock            = false;
 
-    private double vX = 1.000;
-    private double vY = 1.000;
+     double vX = 2.000;
+     double vY = 2.000;
 
 
     private void resetColideFlags() {
@@ -346,7 +346,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
     private void setPhysicsToBall() {
-        //v = ((time - hitTime) / 1000.000) + 1.000;
+        v = ((time - hitTime) / 1000.000) + 1.000;
 
         if (goDownBall) {
             yBall += vY;
@@ -361,7 +361,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         }
 
         if (yBall <= 0) {
-            //vX = 1.000;
+            vX = 2.000;
             resetColideFlags();
             goDownBall = true;
             return;
@@ -379,7 +379,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 }
 
             }
-            //return;
+            return;
         }
 
         if (yBall >= yBreak - ballRadius) {
@@ -393,7 +393,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 double relation = (xBall - centerBreakX) / (breakWidth / 2);
 
                 if (Math.abs(relation) <= 0.3) {
-                    //vX = 0;
+                    vX = 0;
                     vX = Math.abs(relation);
                 } else if (Math.abs(relation) > 0.3 && Math.abs(relation) <= 0.7) {
                     vX = (Math.abs(relation) * 1.5) + (level / 3.500);
@@ -414,13 +414,13 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
         if (xBall >= sceneWidth) {
             resetColideFlags();
-            //vX = 1.000;
+            vX = 2.000;
             colideToRightWall = true;
         }
 
         if (xBall <= 0) {
             resetColideFlags();
-            //vX = 1.000;
+            vX = 2.000;
             colideToLeftWall = true;
         }
 
@@ -597,7 +597,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             @Override
             public void run() {
                 try {
-                    vX = 1.000;
+                    vX = 2.000;
 
                     engine.stop();
                     resetColideFlags();
@@ -630,7 +630,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             level = 0;
             heart = 3;
             score = 0;
-            vX = 1.000;
+            vX = 2.000;
             destroyedBlockCount = 0;
             resetColideFlags();
             goDownBall = true;
