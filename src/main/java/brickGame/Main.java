@@ -653,78 +653,79 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     @Override
     public void onUpdate() {
-        Platform.runLater(() -> {
-            scoreLabel.setText("Score: " + score);
-            heartLabel.setText("Heart : " + heart);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                scoreLabel.setText("Score: " + score);
+                heartLabel.setText("Heart : " + heart);
 
-            rect.setX(xBreak);
-            rect.setY(yBreak);
-            ball.setCenterX(xBall);
-            ball.setCenterY(yBall);
+                rect.setX(xBreak);
+                rect.setY(yBreak);
+                ball.setCenterX(xBall);
+                ball.setCenterY(yBall);
 
-            for (Bonus choco : chocos) {
-                choco.choco.setY(choco.y);
-            }
-
-        });
-
-
-        if (yBall >= Block.getPaddingTop() && yBall <= (Block.getHeight() * (level + 1)) + Block.getPaddingTop()) {
-            for (final Block block : blocks) {
-                int hitCode = block.checkHitToBlock(xBall, yBall, ballRadius);
-                if (hitCode != Block.NO_HIT) {
-                    score += 1;
-
-                    new Score().show(block.x, block.y, 1, this);
-
-                    block.rect.setVisible(false);
-                    block.isDestroyed = true;
-                    destroyedBlockCount++;
-                    //System.out.println("size is " + blocks.size());
-                    resetColideFlags();
-
-                    if (block.type == Block.BLOCK_CHOCO) {
-                        final Bonus choco = new Bonus(block.row, block.column);
-                        choco.timeCreated = time;
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                root.getChildren().add(choco.choco);
-                            }
-                        });
-                        chocos.add(choco);
-                    }
-
-                    if (block.type == Block.BLOCK_STAR) {
-                        goldTime = time;
-                        ball.setFill(new ImagePattern(new Image("goldball.png")));
-                        System.out.println("gold ball");
-                        root.getStyleClass().add("goldRoot");
-                        isGoldStauts = true;
-                    }
-
-                    if (block.type == Block.BLOCK_HEART) {
-                        heart++;
-                    }
-
-
-                    if (hitCode == Block.HIT_RIGHT) {
-                        colideToRightBlock = true;
-                    } else if (hitCode == Block.HIT_BOTTOM) {
-                        colideToBottomBlock = true;
-                    } else if (hitCode == Block.HIT_LEFT) {
-                        colideToLeftBlock = true;
-                    } else if (hitCode == Block.HIT_TOP) {
-                        colideToTopBlock = true;
-                    }
-
+                for (Bonus choco : chocos) {
+                    choco.choco.setY(choco.y);
                 }
 
-                //TODO hit to break and some work here....
-                //System.out.println("Break in row:" + block.row + " and column:" + block.column + " hit");
+                for (final Block block : blocks) {
+                    int hitCode = block.checkHitToBlock(xBall, yBall, ballRadius);
+                    if (hitCode != Block.NO_HIT) {
+                        score += 1;
+
+                        new Score().show(block.x, block.y, 1, Main.this);
+
+                        block.rect.setVisible(false);
+                        block.isDestroyed = true;
+                        destroyedBlockCount++;
+
+                        if (block.type == Block.BLOCK_CHOCO) {
+                            final Bonus choco = new Bonus(block.row, block.column);
+                            choco.timeCreated = time;
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    root.getChildren().add(choco.choco);
+                                }
+                            });
+                            chocos.add(choco);
+                        }
+
+                        if (block.type == Block.BLOCK_STAR) {
+                            goldTime = time;
+                            ball.setFill(new ImagePattern(new Image("goldball.png")));
+                            root.getStyleClass().add("goldRoot");
+                            isGoldStauts = true;
+                        }
+
+                        if (block.type == Block.BLOCK_HEART) {
+                            heart++;
+                        }
+
+                        switch (hitCode) {
+                            case Block.HIT_BOTTOM:
+                            case Block.HIT_TOP:
+                                goDownBall = !goDownBall;
+                                break;
+                            case Block.HIT_LEFT:
+                            case Block.HIT_RIGHT:
+                                goRightBall = !goRightBall;
+                                break;
+                        }
+                    }
+
+                    // TODO: Add additional game logic here if necessary
+                }
+
+                checkDestroyedCount();
             }
-        }
+        });
     }
+
+
+    //TODO hit to break and some work here....
+                //System.out.println("Break in row:" + block.row + " and column:" + block.column + " hit");
+
 
 
 

@@ -30,11 +30,11 @@ public class Block implements Serializable {
     public Rectangle rect;
 
 
-    public static int NO_HIT = -1;
-    public static int HIT_RIGHT = 0;
-    public static int HIT_BOTTOM = 1;
-    public static int HIT_LEFT = 2;
-    public static int HIT_TOP = 3;
+    public static final int NO_HIT = -1;
+    public static final int HIT_RIGHT = 0;
+    public static final int HIT_BOTTOM = 1;
+    public static final int HIT_LEFT = 2;
+    public static final int HIT_TOP = 3;
 
     public static int BLOCK_NORMAL = 99;
     public static int BLOCK_CHOCO = 100;
@@ -88,48 +88,34 @@ public class Block implements Serializable {
         double blockRight = x + width;
         double blockBottom = y + height;
 
-        // Check collision with bottom side
-        if (yBall + ballRadius >= y && yBall - ballRadius <= blockBottom && xBall >= x && xBall <= blockRight) {
+        boolean hitBottom = yBall + ballRadius >= y && yBall - ballRadius <= blockBottom;
+        boolean hitTop = yBall - ballRadius <= blockBottom && yBall + ballRadius >= y;
+        boolean hitRight = xBall + ballRadius >= x && xBall - ballRadius <= blockRight;
+        boolean hitLeft = xBall - ballRadius <= blockRight && xBall + ballRadius >= x;
+
+        if (hitBottom && xBall >= x && xBall <= blockRight) {
+            isDestroyed = true;
             return HIT_BOTTOM;
         }
 
-        // Check collision with top side
-        if (yBall - ballRadius <= blockBottom && yBall + ballRadius >= y && xBall >= x && xBall <= blockRight) {
+        if (hitTop && xBall >= x && xBall <= blockRight) {
+            isDestroyed = true;
             return HIT_TOP;
         }
 
-        // Check collision with right side
-        if (xBall + ballRadius >= x && xBall - ballRadius <= blockRight && yBall >= y && yBall <= blockBottom) {
+        if (hitRight && yBall >= y && yBall <= blockBottom) {
+            isDestroyed = true;
             return HIT_RIGHT;
         }
 
-        // Check collision with left side
-        if (xBall - ballRadius <= blockRight && xBall + ballRadius >= x && yBall >= y && yBall <= blockBottom) {
+        if (hitLeft && yBall >= y && yBall <= blockBottom) {
+            isDestroyed = true;
             return HIT_LEFT;
-        }
-
-        // Check collision with top right corner
-        if (Math.pow(xBall - blockRight, 2) + Math.pow(yBall - y, 2) <= Math.pow(ballRadius, 2)) {
-            return HIT_TOP;
-        }
-
-        // Check collision with top left corner
-        if (Math.pow(xBall - x, 2) + Math.pow(yBall - y, 2) <= Math.pow(ballRadius, 2)) {
-            return HIT_TOP;
-        }
-
-        // Check collision with bottom right corner
-        if (Math.pow(xBall - blockRight, 2) + Math.pow(yBall - blockBottom, 2) <= Math.pow(ballRadius, 2)) {
-            return HIT_BOTTOM;
-        }
-
-        // Check collision with bottom left corner
-        if (Math.pow(xBall - x, 2) + Math.pow(yBall - blockBottom, 2) <= Math.pow(ballRadius, 2)) {
-            return HIT_BOTTOM;
         }
 
         return NO_HIT;
     }
+
 
     public static int getPaddingTop() {
         return block.paddingTop;
