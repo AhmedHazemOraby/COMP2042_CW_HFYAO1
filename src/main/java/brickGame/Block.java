@@ -1,6 +1,5 @@
 package brickGame;
 
-
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -13,8 +12,6 @@ public class Block implements Serializable {
 
     public int row;
     public int column;
-
-
     public boolean isDestroyed = false;
 
     private Color color;
@@ -22,13 +19,12 @@ public class Block implements Serializable {
 
     public int x;
     public int y;
-
-    private int width = 100;
-    private int height = 30;
-    private int paddingTop = height * 2;
-    private int paddingH = 50;
     public Rectangle rect;
 
+    private int width;
+    private int height;
+    private int paddingTop;
+    private int paddingH;
 
     public static final int NO_HIT = -1;
     public static final int HIT_RIGHT = 0;
@@ -41,12 +37,17 @@ public class Block implements Serializable {
     public static int BLOCK_STAR = 101;
     public static int BLOCK_HEART = 102;
 
-
     public Block(int row, int column, Color color, int type) {
         this.row = row;
         this.column = column;
         this.color = color;
         this.type = type;
+
+        // Initialize width, height, paddingTop, and paddingH in the constructor
+        this.width = 100;
+        this.height = 30;
+        this.paddingTop = height * 2;
+        this.paddingH = 50;
 
         draw();
     }
@@ -76,9 +77,7 @@ public class Block implements Serializable {
         } else {
             rect.setFill(color);
         }
-
     }
-
 
     public int checkHitToBlock(double xBall, double yBall, double ballRadius) {
         if (isDestroyed) {
@@ -116,7 +115,6 @@ public class Block implements Serializable {
         return NO_HIT;
     }
 
-
     public static int getPaddingTop() {
         return block.paddingTop;
     }
@@ -132,5 +130,4 @@ public class Block implements Serializable {
     public static int getWidth() {
         return block.width;
     }
-
 }

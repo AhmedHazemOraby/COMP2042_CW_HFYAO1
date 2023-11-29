@@ -22,6 +22,7 @@ public class Bonus implements Serializable {
         draw();
     }
 
+    // Initialize and draw the bonus
     private void draw() {
         choco = new Rectangle();
         choco.setWidth(30);
@@ -38,7 +39,4 @@ public class Bonus implements Serializable {
 
         choco.setFill(new ImagePattern(new Image(url)));
     }
-
-
-
 }

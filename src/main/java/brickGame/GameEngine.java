@@ -81,7 +81,6 @@ public class GameEngine {
         }
     }
 
-
     public interface OnAction {
         void onUpdate();          // Called on each frame update
         void onInit();            // Called during initialization
