@@ -282,12 +282,14 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         rect = new Rectangle();
         rect.setWidth(breakWidth);
         rect.setHeight(breakHeight);
+        xBreak = (sceneWidth - breakWidth) / 2.0;
         rect.setX(xBreak);
         rect.setY(yBreak);
 
         ImagePattern pattern = new ImagePattern(new Image("block.jpg"));
         rect.setFill(pattern);
     }
+
 
 
     private boolean goDownBall                  = true;
