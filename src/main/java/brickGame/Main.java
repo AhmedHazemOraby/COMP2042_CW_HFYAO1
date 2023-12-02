@@ -26,7 +26,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private static final int RIGHT = 2;
 
     // Game variables
-    private int level = 0;
+    private int level = 1;
     private double xBreak = 0.0f;
     private double centerBreakX;
     private double yBreak = 640.0f;
@@ -40,6 +40,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private double yBall;
     private boolean isGoldStatus = false;
     private boolean isExistHeartBlock = false;
+    private boolean isLevelCompleted = false;
     private Rectangle rect;
     private int ballRadius = 10;
     private int destroyedBlockCount = 0;
@@ -93,9 +94,10 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         this.primaryStage = primaryStage;
 
         if (!loadFromSave) {
-            level++;
-            if (level > 1) {
-                new Score().showMessage("Level Up :)", this);
+            if (level == 1) {
+                new Score().showMessage("Welcome!", this); // Start from level 1 if level is initially 0
+            } else if (level > 1) {
+                new Score().showMessage("Level " + level, this);
             }
             if (level == 18) {
                 new Score().showWin(this);
@@ -275,7 +277,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         yBall = sceneHeight / 2.0;
         ball = new Circle();
         ball.setRadius(ballRadius);
-        ball.setFill(new ImagePattern(new Image("ball.png")));
+        ball.setFill(new ImagePattern(new Image("pokeball.png")));
     }
 
     private void initBreak() {
@@ -427,6 +429,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     private void checkDestroyedCount() {
         if (destroyedBlockCount == blocks.size()) {
+            isLevelCompleted = true;
             nextLevel();
         }
     }
@@ -547,6 +550,11 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 resetColideFlags();
                 goDownBall = true;
 
+                if (isLevelCompleted) {
+                    level ++;
+                    isLevelCompleted = false;
+                }
+
                 isGoldStatus = false;
                 isExistHeartBlock = false;
 
@@ -628,7 +636,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
                     if (block.type == Block.BLOCK_STAR) {
                         goldTime = time;
-                        ball.setFill(new ImagePattern(new Image("goldball.png")));
+                        ball.setFill(new ImagePattern(new Image("Ultraball.png")));
                         root.getStyleClass().add("goldRoot");
                         isGoldStatus = true;
                     }
@@ -661,7 +669,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             setPhysicsToBall();
 
             if (time - goldTime > 5000) {
-                ball.setFill(new ImagePattern(new Image("ball.png")));
+                ball.setFill(new ImagePattern(new Image("pokeball.png")));
                 root.getStyleClass().remove("goldRoot");
                 isGoldStatus = false;
             }
