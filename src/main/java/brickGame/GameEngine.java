@@ -76,6 +76,7 @@ public class GameEngine {
             try {
                 thread.join();
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // Restore the interrupted status
                 e.printStackTrace();
             }
         }
