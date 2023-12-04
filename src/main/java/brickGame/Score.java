@@ -2,27 +2,36 @@ package brickGame;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
+
 public class Score {
     // Show the score label on the screen
     public void show(final double x, final double y, int score, final Main main) {
         String sign;
+        String textColor;
+
         if (score >= 0) {
             sign = "+";
+            textColor = "green";
         } else {
             sign = "";
+            textColor = "red";
         }
+
         final Label label = new Label(sign + score);
         label.setTranslateX(x);
         label.setTranslateY(y);
+
+        // Apply CSS styling for text color
+        label.setStyle("-fx-text-fill: " + textColor + ";");
 
         Platform.runLater(() -> main.root.getChildren().add(label));
 
