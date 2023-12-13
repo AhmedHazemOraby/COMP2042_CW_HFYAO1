@@ -34,7 +34,7 @@ public class Bonus implements Serializable {
         if (new Random().nextInt(20) % 2 == 0) {
             url = "Bonus.png";
         } else {
-            url = "bonus1.png";
+            url = "Bonus1.png";
         }
 
         choco.setFill(new ImagePattern(new Image(url)));
