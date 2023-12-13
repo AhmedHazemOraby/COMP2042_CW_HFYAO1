@@ -180,22 +180,17 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
     private void initBoard() {
-        // Create a Random instance for generating random numbers
         Random random = new Random();
 
-        // Iterate over rows
         for (int i = 0; i < 4; i++) {
-            // Iterate over columns
             for (int j = 0; j < level + 1; j++) {
-                // Generate a random number between 0 and 9 (inclusive)
-                int r = random.nextInt(10);
+                int r = random.nextInt(100); // Generate a random number between 0 and 99
 
-                // Determine the type of block based on the random number
                 int type;
-                if (r == 1) {
+                if (r < 10) {
                     // 10% chance for BLOCK_CHOCO
                     type = Block.BLOCK_CHOCO;
-                } else if (r == 2) {
+                } else if (r < 20) {
                     // 10% chance for BLOCK_HEART if it doesn't exist, otherwise BLOCK_NORMAL
                     if (!isExistHeartBlock) {
                         type = Block.BLOCK_HEART;
@@ -203,19 +198,27 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                     } else {
                         type = Block.BLOCK_NORMAL;
                     }
-                } else if (r == 3) {
+                } else if (r < 30) {
                     // 10% chance for BLOCK_STAR
                     type = Block.BLOCK_STAR;
                 } else {
-                    // 70% chance for BLOCK_NORMAL
-                    type = Block.BLOCK_NORMAL;
+                    // 70% chance divided equally among each
+                    int blockChoice = random.nextInt(5);
+                    switch (blockChoice) {
+                        case 0: type = Block.BLOCK_BLOCK1; break;
+                        case 1: type = Block.BLOCK_BLOCK2; break;
+                        case 2: type = Block.BLOCK_BLOCK3; break;
+                        case 3: type = Block.BLOCK_BLOCK4; break;
+                        case 4: type = Block.BLOCK_BLOCK5; break;
+                        default: type = Block.BLOCK_NORMAL; //should not happen
+                    }
                 }
 
-                // Create a new Block and add it to the list
                 blocks.add(new Block(j, i, colors[random.nextInt(colors.length)], type));
             }
         }
     }
+
 
     public static void main(String[] args) {
         launch(args);

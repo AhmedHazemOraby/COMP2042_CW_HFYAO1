@@ -36,6 +36,13 @@ public class Block implements Serializable {
     public static int BLOCK_CHOCO = 100;
     public static int BLOCK_STAR = 101;
     public static int BLOCK_HEART = 102;
+    public static int BLOCK_BLOCK1 = 103;
+    public static int BLOCK_BLOCK2 = 104;
+    public static int BLOCK_BLOCK3 = 105;
+    public static int BLOCK_BLOCK4 = 106;
+    public static int BLOCK_BLOCK5 = 107;
+
+
 
     public Block(int row, int column, Color color, int type) {
         this.row = row;
@@ -63,7 +70,7 @@ public class Block implements Serializable {
         rect.setY(y);
 
         if (type == BLOCK_CHOCO) {
-            Image image = new Image("choco.jpg");
+            Image image = new Image("Block 6.png");
             ImagePattern pattern = new ImagePattern(image);
             rect.setFill(pattern);
         } else if (type == BLOCK_HEART) {
@@ -71,7 +78,27 @@ public class Block implements Serializable {
             ImagePattern pattern = new ImagePattern(image);
             rect.setFill(pattern);
         } else if (type == BLOCK_STAR) {
-            Image image = new Image("star.jpg");
+            Image image = new Image("StarBlock.png");
+            ImagePattern pattern = new ImagePattern(image);
+            rect.setFill(pattern);
+        } else if (type == BLOCK_BLOCK1) {
+            Image image = new Image("Block 1.png");
+            ImagePattern pattern = new ImagePattern(image);
+            rect.setFill(pattern);
+        } else if (type == BLOCK_BLOCK2) {
+            Image image = new Image("Block 2.png");
+            ImagePattern pattern = new ImagePattern(image);
+            rect.setFill(pattern);
+        } else if (type == BLOCK_BLOCK3) {
+            Image image = new Image("Block 3.png");
+            ImagePattern pattern = new ImagePattern(image);
+            rect.setFill(pattern);
+        } else if (type == BLOCK_BLOCK4) {
+            Image image = new Image("Block 4.png");
+            ImagePattern pattern = new ImagePattern(image);
+            rect.setFill(pattern);
+        } else if (type == BLOCK_BLOCK5) {
+            Image image = new Image("Block 5.png");
             ImagePattern pattern = new ImagePattern(image);
             rect.setFill(pattern);
         } else {
