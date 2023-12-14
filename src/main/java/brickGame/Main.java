@@ -239,6 +239,11 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             case S:
                 saveGame();
                 break;
+            case P:
+                if (engine != null) {
+                    engine.togglePause();
+                }
+                break;
         }
     }
 

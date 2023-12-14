@@ -8,6 +8,16 @@ public class GameEngine {
     private int fps = 60;
     private Thread gameLoopThread;
     private boolean isStopped = true;
+    private boolean isPaused = false;
+
+    public void togglePause() {
+        isPaused = !isPaused;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
 
     // Set the OnAction for the game engine
     public void setOnAction(OnAction onAction) {
@@ -25,23 +35,25 @@ public class GameEngine {
     // The main game loop that handles updating and physics
     private synchronized void gameLoop() {
         while (!Thread.currentThread().isInterrupted()) {
+            if (!isPaused) {
+                try {
+                    Platform.runLater(() -> {
+                        onAction.onTime(System.currentTimeMillis());
+                        onAction.onUpdate();
+                        onAction.onPhysicsUpdate();
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             try {
-                // Run UI-related code in the JavaFX Application Thread
-                Platform.runLater(() -> {
-                    onAction.onTime(System.currentTimeMillis());
-                    // Update game state
-                    onAction.onUpdate();
-                    // Update physics
-                    onAction.onPhysicsUpdate();
-                });
-                Thread.sleep(fps); // Delay based on fps
+                Thread.sleep(fps); // Sleep even when paused to avoid high CPU usage
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
+
 
     // Initialize the game engine
     private void initialize() {
