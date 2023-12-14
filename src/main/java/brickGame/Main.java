@@ -584,7 +584,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     public void restartGame() {
         try {
-            level = 0;
+            level = 1; // Set the level to 1
             heart = 3;
             score = 0;
             vX = 2.000;
