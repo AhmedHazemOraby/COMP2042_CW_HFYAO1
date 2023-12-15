@@ -181,10 +181,14 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
     private void initBoard() {
         Random random = new Random();
+        int blocksPerRow = 4; // Maximum number of blocks per row
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < level + 1; j++) {
-                int r = random.nextInt(100); // Generate a random number between 0 and 99
+        // Start with 2 rows, then increase by 1 each level until reaching 11 rows
+        int rowsForCurrentLevel = Math.min(2 + (level - 1), 9);
+
+        for (int i = 0; i < rowsForCurrentLevel; i++) {
+            for (int j = 0; j < blocksPerRow; j++) {
+                int r = random.nextInt(100); // Generate a random number between 0 and 99 for block type determination
 
                 int type;
                 if (r < 10) {
@@ -210,14 +214,15 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                         case 2: type = Block.BLOCK_BLOCK3; break;
                         case 3: type = Block.BLOCK_BLOCK4; break;
                         case 4: type = Block.BLOCK_BLOCK5; break;
-                        default: type = Block.BLOCK_NORMAL; //should not happen
+                        default: type = Block.BLOCK_NORMAL; // Should not happen
                     }
                 }
 
-                blocks.add(new Block(j, i, colors[random.nextInt(colors.length)], type));
+                blocks.add(new Block(i, j, colors[random.nextInt(colors.length)], type));
             }
         }
     }
+
 
 
     public static void main(String[] args) {
