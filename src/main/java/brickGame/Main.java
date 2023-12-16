@@ -1,15 +1,15 @@
 package brickGame;
 
 import javafx.application.Application;
+import javafx.scene.control.Label;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -92,91 +92,99 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
+        initMenu();
+    }
+    private void initMenu() {
+        Pane menuPane = new Pane();
 
-        if (!loadFromSave) {
-            if (level == 1) {
-                new Score().showMessage("Welcome!", this); // Start from level 1 if level is initially 0
-            } else if (level > 1) {
-                new Score().showMessage("Level " + level, this);
-            }
-            if (level == 18) {
-                new Score().showWin(this);
-                return;
-            }
+        // Set background image
+        BackgroundImage backgroundImage = new BackgroundImage(new Image("Menu.png"),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        menuPane.setBackground(new Background(backgroundImage));
 
-            initBall();
-            initBreak();
-            initBoard();
+        Button startGameButton = new Button("Start Game");
+        startGameButton.setTranslateX(200); // Set X position
+        startGameButton.setTranslateY(250); // Set Y position
 
-            load = new Button("Load Game");
-            newGame = new Button("Start New Game");
-            load.setTranslateX(220);
-            load.setTranslateY(300);
-            newGame.setTranslateX(220);
-            newGame.setTranslateY(340);
+        startGameButton.setOnAction(event -> initGame());
+
+        menuPane.getChildren().add(startGameButton);
+        Scene menuScene = new Scene(menuPane, sceneWidth, sceneHeight);
+        primaryStage.setScene(menuScene);
+        primaryStage.setTitle("Menu");
+        primaryStage.show();
+    }
+
+    private void initGame() {
+        // Create and set up game scene
+        root = new Pane();
+        // Initialize labels
+        scoreLabel = new Label("Score: " + score);
+        levelLabel = new Label("Level: " + level);
+        levelLabel.setTranslateY(20);
+        heartLabel = new Label("Heart : " + heart);
+        heartLabel.setTranslateX(sceneWidth - 70);
+        root.getChildren().addAll(scoreLabel, heartLabel, levelLabel);
+
+        Scene gameScene = new Scene(root, sceneWidth, sceneHeight);
+        gameScene.setOnKeyPressed(this);
+
+        // Add stylesheets if any
+        gameScene.getStylesheets().add("style.css");
+
+        // Initialize game components
+        initBall();
+        initBreak();
+        initBoard();
+
+        // Add game components to root
+        root.getChildren().addAll(rect, ball);
+        for (Block block : blocks) {
+            root.getChildren().add(block.rect);
         }
 
+        // Setup and start the game engine
+        engine = new GameEngine();
+        engine.setOnAction(this);
+        engine.setFps(120);
+        engine.start();
+
+        primaryStage.setTitle("Game");
+        primaryStage.setScene(gameScene);
+        primaryStage.show();
+    }
+
+    private void startGame() {
         root = new Pane();
         scoreLabel = new Label("Score: " + score);
         levelLabel = new Label("Level: " + level);
         levelLabel.setTranslateY(20);
         heartLabel = new Label("Heart : " + heart);
         heartLabel.setTranslateX(sceneWidth - 70);
-        if (!loadFromSave) {
-            root.getChildren().addAll(rect, ball, scoreLabel, heartLabel, levelLabel, newGame);
-        } else {
-            root.getChildren().addAll(rect, ball, scoreLabel, heartLabel, levelLabel);
-        }
+
+        root.getChildren().addAll(rect, ball, scoreLabel, heartLabel, levelLabel);
         for (Block block : blocks) {
             root.getChildren().add(block.rect);
         }
-        Scene scene = new Scene(root, sceneWidth, sceneHeight);
-        scene.getStylesheets().add("style.css");
-        scene.setOnKeyPressed(this);
+        Scene gameScene = new Scene(root, sceneWidth, sceneHeight);
+        gameScene.getStylesheets().add("style.css");
+        gameScene.setOnKeyPressed(this);
 
         primaryStage.setTitle("Game");
-        primaryStage.setScene(scene);
+        primaryStage.setScene(gameScene);
         primaryStage.show();
 
-        if (!loadFromSave) {
-            if (level > 1 && level < 18) {
-                load.setVisible(false);
-                newGame.setVisible(false);
-                engine = new GameEngine();
-                engine.setOnAction(this);
-                engine.setFps(120);
-                engine.start();
-            }
+        // Initialize game components
+        initBall();
+        initBreak();
+        initBoard();
 
-            load.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    loadGame();
-
-                    load.setVisible(false);
-                    newGame.setVisible(false);
-                }
-            });
-
-            newGame.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    engine = new GameEngine();
-                    engine.setOnAction(Main.this);
-                    engine.setFps(120);
-                    engine.start();
-
-                    load.setVisible(false);
-                    newGame.setVisible(false);
-                }
-            });
-        } else {
-            engine = new GameEngine();
-            engine.setOnAction(this);
-            engine.setFps(120);
-            engine.start();
-            loadFromSave = false;
-        }
+        // Start the game engine
+        engine = new GameEngine();
+        engine.setOnAction(this);
+        engine.setFps(120);
+        engine.start();
     }
 
     private void initBoard() {
@@ -558,13 +566,13 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         Platform.runLater(() -> {
             try {
                 vX = 2.000;
-
                 engine.stop();
                 resetColideFlags();
                 goDownBall = true;
 
                 if (isLevelCompleted) {
-                    level ++;
+                    level++;  // Increment the level
+                    levelLabel.setText("Level: " + level);  // Update the level label
                     isLevelCompleted = false;
                 }
 
@@ -575,17 +583,33 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 time = 0;
                 goldTime = 0;
 
-                engine.stop();
                 blocks.clear();
                 chocos.clear();
                 destroyedBlockCount = 0;
-                start(primaryStage);
+
+                initBall();
+                initBreak();
+                initBoard();
+
+                // Clear and re-add game components to root
+                root.getChildren().clear();
+                root.getChildren().addAll(rect, ball, scoreLabel, heartLabel, levelLabel);
+                for (Block block : blocks) {
+                    root.getChildren().add(block.rect);
+                }
+
+                // Restart the game engine for the next level
+                engine = new GameEngine();
+                engine.setOnAction(this);
+                engine.setFps(120);
+                engine.start();
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
+
 
     public void restartGame() {
         try {
