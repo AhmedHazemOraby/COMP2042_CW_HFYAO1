@@ -208,7 +208,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                         type = Block.BLOCK_HEART;
                         isExistHeartBlock = true;
                     } else {
-                        type = Block.BLOCK_NORMAL;
+                        type = Block.BLOCK_BLOCK1;
                     }
                 } else if (r < 30) {
                     // 10% chance for BLOCK_STAR
@@ -222,7 +222,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                         case 2: type = Block.BLOCK_BLOCK3; break;
                         case 3: type = Block.BLOCK_BLOCK4; break;
                         case 4: type = Block.BLOCK_BLOCK5; break;
-                        default: type = Block.BLOCK_NORMAL; // Should not happen
+                        default: type = Block.BLOCK_BLOCK5; // Should not happen
                     }
                 }
 
