@@ -26,6 +26,8 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private static final int RIGHT = 2;
 
     // Game variables
+    private boolean isNextLevelCalled = false;
+    private boolean isEndlessMode = false;
     private int level = 1;
     private double xBreak = 0.0f;
     private double centerBreakX;
@@ -106,22 +108,30 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         Button startGameButton = new Button("Start Game");
         startGameButton.setTranslateX(200); // Set X position
         startGameButton.setTranslateY(250); // Set Y position
+        startGameButton.setOnAction(event -> initGame(false));
 
-        startGameButton.setOnAction(event -> initGame());
+        Button endlessModeButton = new Button("Endless Mode");
+        endlessModeButton.setTranslateX(200);
+        endlessModeButton.setTranslateY(300); // Adjust Y position
+        endlessModeButton.setOnAction(event -> initGame(true));
 
-        menuPane.getChildren().add(startGameButton);
+        menuPane.getChildren().addAll(startGameButton, endlessModeButton);
         Scene menuScene = new Scene(menuPane, sceneWidth, sceneHeight);
         primaryStage.setScene(menuScene);
         primaryStage.setTitle("Menu");
         primaryStage.show();
     }
 
-    private void initGame() {
+    private void initGame(boolean endlessMode) {
+        this.isEndlessMode = endlessMode;
+
         // Create and set up game scene
         root = new Pane();
+
         // Initialize labels
         scoreLabel = new Label("Score: " + score);
-        levelLabel = new Label("Level: " + level);
+        // Set the level label based on the mode
+        levelLabel = new Label(isEndlessMode ? "Level: Endless" : "Level: " + level);
         levelLabel.setTranslateY(20);
         heartLabel = new Label("Heart : " + heart);
         heartLabel.setTranslateX(sceneWidth - 70);
@@ -154,6 +164,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         primaryStage.setScene(gameScene);
         primaryStage.show();
     }
+
 
     private void startGame() {
         root = new Pane();
@@ -192,7 +203,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         int blocksPerRow = 4; // Maximum number of blocks per row
 
         // Start with 2 rows, then increase by 1 each level until reaching 11 rows
-        int rowsForCurrentLevel = Math.min(2 + (level - 1), 9);
+        int rowsForCurrentLevel = isEndlessMode ? 9 : Math.min(2 + (level - 1), 9);
 
         for (int i = 0; i < rowsForCurrentLevel; i++) {
             for (int j = 0; j < blocksPerRow; j++) {
@@ -449,11 +460,13 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     }
 
     private void checkDestroyedCount() {
-        if (destroyedBlockCount == blocks.size()) {
+        if (destroyedBlockCount == blocks.size() && !isNextLevelCalled) {
             isLevelCompleted = true;
+            isNextLevelCalled = true;  // Set the flag to true to prevent multiple calls
             nextLevel();
         }
     }
+
 
     private void saveGame() {
         new Thread(() -> {
@@ -570,12 +583,15 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 resetColideFlags();
                 goDownBall = true;
 
-                if (isLevelCompleted) {
-                    level++;  // Increment the level
-                    levelLabel.setText("Level: " + level);  // Update the level label
-                    isLevelCompleted = false;
+                // Set level label based on the mode
+                if (isEndlessMode) {
+                    levelLabel.setText("Level: Endless");
+                } else {
+                    level++;  // Increment the level only in normal mode
+                    levelLabel.setText("Level: " + level);
                 }
 
+                isLevelCompleted = false;
                 isGoldStatus = false;
                 isExistHeartBlock = false;
 
@@ -589,7 +605,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
                 initBall();
                 initBreak();
-                initBoard();
+                initBoard();  // This will now be aware of the mode and generate blocks accordingly
 
                 // Clear and re-add game components to root
                 root.getChildren().clear();
