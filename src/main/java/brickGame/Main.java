@@ -299,7 +299,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         rect.setX(xBreak);
         rect.setY(yBreak);
 
-        ImagePattern pattern = new ImagePattern(new Image("block.jpg"));
+        ImagePattern pattern = new ImagePattern(new Image("Padel.png"));
         rect.setFill(pattern);
     }
 
