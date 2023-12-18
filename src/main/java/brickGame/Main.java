@@ -167,36 +167,15 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
 
 
     private void startGame() {
-        root = new Pane();
-        scoreLabel = new Label("Score: " + score);
-        levelLabel = new Label("Level: " + level);
-        levelLabel.setTranslateY(20);
-        heartLabel = new Label("Heart : " + heart);
-        heartLabel.setTranslateX(sceneWidth - 70);
+        try {
+            isNextLevelCalled = false; // Reset the flag
 
-        root.getChildren().addAll(rect, ball, scoreLabel, heartLabel, levelLabel);
-        for (Block block : blocks) {
-            root.getChildren().add(block.rect);
+            // Rest of your code for starting the game...
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        Scene gameScene = new Scene(root, sceneWidth, sceneHeight);
-        gameScene.getStylesheets().add("style.css");
-        gameScene.setOnKeyPressed(this);
-
-        primaryStage.setTitle("Game");
-        primaryStage.setScene(gameScene);
-        primaryStage.show();
-
-        // Initialize game components
-        initBall();
-        initBreak();
-        initBoard();
-
-        // Start the game engine
-        engine = new GameEngine();
-        engine.setOnAction(this);
-        engine.setFps(120);
-        engine.start();
     }
+
 
     private void initBoard() {
         Random random = new Random();
@@ -594,6 +573,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
                 isLevelCompleted = false;
                 isGoldStatus = false;
                 isExistHeartBlock = false;
+                isNextLevelCalled = false; // Reset the flag
 
                 hitTime = 0;
                 time = 0;
@@ -625,6 +605,7 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
             }
         });
     }
+
 
 
     public void restartGame() {
