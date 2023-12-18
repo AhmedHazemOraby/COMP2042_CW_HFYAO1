@@ -100,27 +100,40 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
         Pane menuPane = new Pane();
 
         // Set background image
-        BackgroundImage backgroundImage = new BackgroundImage(new Image("Menu.png"),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT);
+        BackgroundImage backgroundImage = new BackgroundImage(
+                new Image("Menu.png"),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         menuPane.setBackground(new Background(backgroundImage));
 
+        // Create buttons
         Button startGameButton = new Button("Start Game");
-        startGameButton.setTranslateX(200); // Set X position
-        startGameButton.setTranslateY(250); // Set Y position
-        startGameButton.setOnAction(event -> initGame(false));
-
         Button endlessModeButton = new Button("Endless Mode");
+
+        // Apply styles to buttons
+        startGameButton.setStyle("-fx-font-size: 16px; -fx-background-color: #4CAF50; -fx-text-fill: white;");
+        endlessModeButton.setStyle("-fx-font-size: 16px; -fx-background-color: #008CBA; -fx-text-fill: white;");
+
+        // Set button positions
+        startGameButton.setTranslateX(200);
+        startGameButton.setTranslateY(250);
         endlessModeButton.setTranslateX(200);
-        endlessModeButton.setTranslateY(300); // Adjust Y position
+        endlessModeButton.setTranslateY(300);
+
+        // Button actions
+        startGameButton.setOnAction(event -> initGame(false));
         endlessModeButton.setOnAction(event -> initGame(true));
 
+        // Add buttons to the menuPane
         menuPane.getChildren().addAll(startGameButton, endlessModeButton);
+
+        // Create the scene
         Scene menuScene = new Scene(menuPane, sceneWidth, sceneHeight);
         primaryStage.setScene(menuScene);
         primaryStage.setTitle("Menu");
         primaryStage.show();
     }
+
 
     private void initGame(boolean endlessMode) {
         this.isEndlessMode = endlessMode;
