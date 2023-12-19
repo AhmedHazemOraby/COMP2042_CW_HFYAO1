@@ -10,7 +10,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import java.util.ArrayList;
-
+/**
+ * The main class for the brick game, extending JavaFX Application.
+ * This class initializes and manages the main game loop, game scenes, and game state.
+ */
 public class Main extends Application implements EventHandler<KeyEvent>, GameEngine.OnAction {
     // Constants for direction
     public static final int LEFT = 1;
@@ -79,12 +82,19 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     Stage primaryStage;
     @Override
     public void onInit() {
-        // Initialization code here
     }
     @Override
     public void onTime(long time) {
         this.time = time;
     }
+    /**
+     * The starting point of the application.
+     * Initializes the main menu of the game.
+     *
+     * @param primaryStage The primary stage for this application, onto which
+     *                     the application scene can be set.
+     * @throws Exception If any issue occurs during the start-up.
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
@@ -99,6 +109,13 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     public void initBoard() {
         InitializationBoard.initializationBoard(this);
     }
+    /**
+     * The main entry point for all JavaFX applications.
+     * The method is called after the application class is loaded and
+     * constructed.
+     *
+     * @param args Command line arguments passed to the application.
+     */
     public static void main(String[] args) {
         launch(args);
     }

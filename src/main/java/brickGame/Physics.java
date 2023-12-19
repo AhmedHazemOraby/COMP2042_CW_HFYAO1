@@ -3,8 +3,17 @@ package brickGame;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
-
+/**
+ * This class contains methods for handling the physics of the brick game.
+ * It includes the movement of the ball, collision detection, and updates related to bonuses.
+ */
 public class Physics {
+    /**
+     * Handles the physics of the ball movement and collisions.
+     * Updates the ball's velocity and direction based on interactions with game objects.
+     *
+     * @param main The main game class where the ball physics are applied.
+     */
     public static void BallPhysics(Main main) {
         main.v = ((main.time - main.hitTime) / 1000.000) + 1.000;
 
@@ -111,6 +120,13 @@ public class Physics {
             main.goDownBall = true;
         }
     }
+    /**
+     * Updates the physics state of the game.
+     * This includes checking for destroyed blocks, updating ball physics,
+     * and handling bonuses and their interactions with the player's paddle.
+     *
+     * @param main The main game class where the physics update is applied.
+     */
     public static void PhysicsUpdater(Main main) {
         Platform.runLater(() -> {
             main.checkDestroyedCount();

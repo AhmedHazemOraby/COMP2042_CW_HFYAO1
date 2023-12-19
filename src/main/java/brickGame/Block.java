@@ -6,26 +6,26 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 import java.io.Serializable;
-
+/**
+ * This class represents a block in the brick game.
+ * It manages the properties and behaviors of each block, including its position, color, and hit detection.
+ */
 public class Block implements Serializable {
     private static Block block = new Block(-1, -1, Color.TRANSPARENT, 99);
-
     public int row;
     public int column;
     public boolean isDestroyed = false;
-
     private Color color;
     public int type;
 
     public int x;
     public int y;
     public Rectangle rect;
-
     private int width;
     private int height;
     private int paddingTop;
     private int paddingH;
-
+    // Constants representing different hit types and block types
     public static final int NO_HIT = -1;
     public static final int HIT_RIGHT = 0;
     public static final int HIT_BOTTOM = 1;
@@ -39,9 +39,15 @@ public class Block implements Serializable {
     public static int BLOCK_BLOCK3 = 105;
     public static int BLOCK_BLOCK4 = 106;
     public static int BLOCK_BLOCK5 = 107;
-
-
-
+    /**
+     * Constructs a new Block with specified row, column, color, and type.
+     * Initializes the dimensions and padding of the block.
+     *
+     * @param row    The row position of the block.
+     * @param column The column position of the block.
+     * @param color  The color of the block.
+     * @param type   The type of the block.
+     */
     public Block(int row, int column, Color color, int type) {
         this.row = row;
         this.column = column;
@@ -56,7 +62,9 @@ public class Block implements Serializable {
 
         draw();
     }
-
+    /**
+     * Draws the block by setting its position and applying the appropriate fill based on its type.
+     */
     private void draw() {
         x = (column * width) + paddingH;
         y = (row * height) + paddingTop;
@@ -103,7 +111,15 @@ public class Block implements Serializable {
             rect.setFill(color);
         }
     }
-
+    /**
+     * Checks if the block has been hit by a ball.
+     * Determines the side of the block hit and marks it as destroyed if hit.
+     *
+     * @param xBall      The x-coordinate of the ball.
+     * @param yBall      The y-coordinate of the ball.
+     * @param ballRadius The radius of the ball.
+     * @return The side of the block that was hit or NO_HIT if no hit occurred.
+     */
     public int checkHitToBlock(double xBall, double yBall, double ballRadius) {
         if (isDestroyed) {
             return NO_HIT;
@@ -139,7 +155,7 @@ public class Block implements Serializable {
 
         return NO_HIT;
     }
-
+    // Static methods to get padding and dimensions of the block
     public static int getPaddingTop() {
         return block.paddingTop;
     }

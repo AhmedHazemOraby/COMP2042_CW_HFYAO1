@@ -5,8 +5,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-
+/**
+ * This class is responsible for initializing different scenes in the brick game.
+ * It includes methods to set up the main menu and the game scene.
+ */
 public class Initialize {
+    /**
+     * Initializes the main menu of the game.
+     * Sets up the menu layout, background, buttons, and their actions.
+     *
+     * @param main The main game class where the menu is initialized.
+     */
     public static void initializeMenu(Main main) {
         Pane menuPane = new Pane();
 
@@ -44,7 +53,13 @@ public class Initialize {
         main.primaryStage.setTitle("Menu");
         main.primaryStage.show();
     }
-
+    /**
+     * Initializes the main game scene.
+     * Sets up the game layout, labels, game components, and starts the game engine.
+     *
+     * @param endlessMode Indicates whether the game is in endless mode.
+     * @param main        The main game class where the game scene is initialized.
+     */
     public static void initializeGame(boolean endlessMode, Main main) {
         main.isEndlessMode = endlessMode;
 

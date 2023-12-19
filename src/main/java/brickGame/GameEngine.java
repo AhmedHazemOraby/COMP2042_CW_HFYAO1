@@ -1,7 +1,10 @@
 package brickGame;
 
 import javafx.application.Platform;
-
+/**
+ * This class represents the game engine for a brick game.
+ * It manages the game loop, handles pausing and stopping the game, and updates the game state.
+ */
 public class GameEngine {
 
     private OnAction onAction;
@@ -9,26 +12,34 @@ public class GameEngine {
     private Thread gameLoopThread;
     private boolean isStopped = true;
     private boolean isPaused = false;
-
+    /**
+     * Toggles the pause state of the game.
+     * If the game is running, it will be paused; if paused, it will resume.
+     */
     public void togglePause() {
         isPaused = !isPaused;
     }
-
-
-    // Set the OnAction for the game engine
+    /**
+     * Sets the OnAction interface for handling game events.
+     *
+     * @param onAction The OnAction instance containing methods to be executed during the game loop.
+     */
     public void setOnAction(OnAction onAction) {
         this.onAction = onAction;
     }
-
     /**
-     * Set the frames per second (fps) for the game loop
-     * @param fps frames per second
+     * Sets the frames per second (fps) for the game loop.
+     * This determines how often the game state is updated.
+     *
+     * @param fps The desired frames per second.
      */
     public void setFps(int fps) {
         this.fps = (int) 1000 / fps; // Convert fps to milliseconds
     }
-
-    // The main game loop that handles updating and physics
+    /**
+     * The main game loop that handles updating and physics.
+     * Runs continuously in a separate thread until interrupted.
+     */
     private synchronized void gameLoop() {
         while (!Thread.currentThread().isInterrupted()) {
             if (!isPaused) {
@@ -49,8 +60,10 @@ public class GameEngine {
             }
         }
     }
-
-
+    /**
+     * Initializes the game engine.
+     * Prepares the game for starting by setting up initial states.
+     */
     // Initialize the game engine
     private void initialize() {
         try {
@@ -60,7 +73,10 @@ public class GameEngine {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Starts the game engine.
+     * Initializes the game and begins the game loop in a new thread.
+     */
     // Start the game engine
     public void start() {
         initialize();
@@ -68,16 +84,21 @@ public class GameEngine {
         gameLoopThread = new Thread(this::gameLoop);
         gameLoopThread.start();
     }
-
-    // Stop the game engine
+    /**
+     * Stops the game engine.
+     * Gracefully terminates the game loop and any associated resources.
+     */
     public void stop() {
         if (!isStopped) {
             isStopped = true;
             interruptThread(gameLoopThread);
         }
     }
-
-    // Helper method to interrupt a thread gracefully
+    /**
+     * Helper method to interrupt a thread gracefully.
+     *
+     * @param thread The thread to be interrupted.
+     */
     private void interruptThread(Thread thread) {
         if (thread != null) {
             thread.interrupt();
@@ -89,7 +110,10 @@ public class GameEngine {
             }
         }
     }
-
+    /**
+     * Interface for handling game actions.
+     * Methods defined here are called at different stages of the game loop.
+     */
     public interface OnAction {
         void onUpdate();          // Called on each frame update
         void onInit();            // Called during initialization

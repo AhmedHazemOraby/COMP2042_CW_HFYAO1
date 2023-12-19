@@ -6,7 +6,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.util.Random;
-
+/**
+ * This class is responsible for initializing different components of the brick game.
+ * It includes methods to set up the game board, the ball, and the player's paddle.
+ */
 public class InitializationBoard {
     public static void initializationBoard(Main main) {
         Random random = new Random();
@@ -51,6 +54,12 @@ public class InitializationBoard {
             }
         }
     }
+    /**
+     * Initializes the ball in the game.
+     * Sets the position and image of the ball at the start of the game.
+     *
+     * @param main The main game class where the ball is initialized.
+     */
     public static void initializeBall(Main main) {
         main.xBall = main.sceneWidth / 2.0;
         main.yBall = main.sceneHeight / 2.0;
@@ -58,6 +67,12 @@ public class InitializationBoard {
         main.ball.setRadius(main.ballRadius);
         main.ball.setFill(new ImagePattern(new Image("pokeball.png")));
     }
+    /**
+     * Initializes the player's paddle (break).
+     * Sets the size, position, and image of the paddle.
+     *
+     * @param main The main game class where the paddle is initialized.
+     */
     public static void initializeBreak(Main main) {
         main.rect = new Rectangle();
         main.rect.setWidth(main.breakWidth);

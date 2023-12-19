@@ -5,46 +5,47 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
-
+/**
+ * This class contains methods for updating the game state.
+ * It includes functions for progressing to the next level and updating in-game elements.
+ */
 public class Updater {
+    /**
+     * Advances the game to the next level.
+     * Handles game state reset, level incrementation, and UI updates.
+     * In normal mode, checks for winning condition and displays a win message if achieved.
+     *
+     * @param main The main game class where the next level is processed.
+     */
     public static void NextLevel(Main main) {
         Platform.runLater(() -> {
             try {
                 // Stop the game engine
                 main.engine.stop();
-
                 // Reset game variables
                 main.vX = 2.000;
                 main.resetColideFlags();
                 main.goDownBall = true;
-
                 // Check for winning condition in normal mode
                 if (!main.isEndlessMode && main.level == 17) {
                     main.level++; // Increment level to the winning level
-
                     // Display winning message and restart option in normal mode
                     Label label = new Label("You Win!");
                     label.setTranslateX(200);
                     label.setTranslateY(250);
                     label.setScaleX(2);
                     label.setScaleY(2);
-
                     Button restart = new Button("Restart");
                     restart.setTranslateX(220);
                     restart.setTranslateY(300);
                     restart.setOnAction(event -> main.restartGame());
-
                     main.root.getChildren().clear();
                     main.root.getChildren().addAll(label, restart);
-
                     return; // Exit the method
                 }
-
                 // Increment the level for both normal and endless modes
                 main.level++;
                 main.levelLabel.setText("Level: " + (main.isEndlessMode ? "Endless" : main.level));
-
-
                 // Game state resets and initializations for both modes
                 main.isLevelCompleted = false;
                 main.isGoldStatus = false;
@@ -80,22 +81,24 @@ public class Updater {
             }
         });
     }
-
-
+    /**
+     * Updates various elements of the game state during each frame.
+     * This includes updating the score and heart labels, the position of the paddle and ball,
+     * and handling block destruction and bonus generation.
+     *
+     * @param main The main game class where the update is applied.
+     */
     public static void update(Main main) {
         Platform.runLater(() -> {
             main.scoreLabel.setText("Score: " + main.score);
             main.heartLabel.setText("Heart : " + main.heart);
-
             main.rect.setX(main.xBreak);
             main.rect.setY(main.yBreak);
             main.ball.setCenterX(main.xBall);
             main.ball.setCenterY(main.yBall);
-
             for (Bonus choco : main.chocos) {
                 choco.choco.setY(choco.y);
             }
-
             for (final Block block : main.blocks) {
                 int hitCode = block.checkHitToBlock(main.xBall, main.yBall, main.ballRadius);
                 if (hitCode != Block.NO_HIT) {
@@ -139,7 +142,6 @@ public class Updater {
                     }
                 }
             }
-
             main.checkDestroyedCount();
         });
     }

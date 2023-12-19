@@ -10,10 +10,21 @@ import javafx.scene.text.Font;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-
-
+/**
+ * This class handles the display and animation of score-related information on the screen.
+ * It includes methods to show score changes and display the game-over screen.
+ */
 public class Score {
-    // Show the score label on the screen
+    /**
+     * Shows a score change on the screen with an animation.
+     * Positive scores are displayed in green, and negative scores in red.
+     * The score label fades and grows in size before disappearing.
+     *
+     * @param x     The x-coordinate where the score will be displayed.
+     * @param y     The y-coordinate where the score will be displayed.
+     * @param score The score to be displayed.
+     * @param main  The main game class where the score is to be displayed.
+     */
     public void show(final double x, final double y, int score, final Main main) {
         String sign;
         String textColor;
@@ -25,16 +36,12 @@ public class Score {
             sign = "";
             textColor = "red";
         }
-
         final Label label = new Label(sign + score);
         label.setTranslateX(x);
         label.setTranslateY(y);
-
         // Apply CSS styling for text color
         label.setStyle("-fx-text-fill: " + textColor + ";");
-
         Platform.runLater(() -> main.root.getChildren().add(label));
-
         // Gradually fade away the label over time using a FadeTransition
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), label);
         fadeTransition.setFromValue(1.0);
@@ -58,7 +65,12 @@ public class Score {
             }
         }).start();
     }
-
+    /**
+     * Displays the game over screen.
+     * Shows a 'Game Over' label and a 'Restart' button to restart the game.
+     *
+     * @param main The main game class where the game over screen is displayed.
+     */
     public void showGameOver(final Main main) {
         Platform.runLater(() -> {
             Label label = new Label("Game Over :(");
