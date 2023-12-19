@@ -15,7 +15,6 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     // Constants for direction
     public static final int LEFT = 1;
     public static final int RIGHT = 2;
-
     // Game variables
     public boolean isNextLevelCalled = false;
     public boolean isEndlessMode = false;
@@ -75,21 +74,17 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     public boolean colideToBottomBlock         = false;
     public boolean colideToLeftBlock           = false;
     public boolean colideToTopBlock            = false;
-
     double vX = 2.000;
     double vY = 2.000;
     Stage primaryStage;
-
     @Override
     public void onInit() {
         // Initialization code here
     }
-
     @Override
     public void onTime(long time) {
         this.time = time;
     }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
@@ -98,78 +93,43 @@ public class Main extends Application implements EventHandler<KeyEvent>, GameEng
     private void initMenu() {
         Initialize.initializeMenu(this);
     }
-
-
     public void initGame(boolean endlessMode) {
         Initialize.initializeGame(endlessMode,this);
     }
-
     public void initBoard() {
         InitializationBoard.initializationBoard(this);
     }
-
-
     public static void main(String[] args) {
         launch(args);
     }
-
     @Override
     public void handle(KeyEvent event) {
         GameRules.HandleKeys(event, this);
     }
-
-
-
     public void move(final int direction) {
         GameRules.Movement(direction, this);
     }
-
-
-
     public void initBall() {
         InitializationBoard.initializeBall(this);
     }
-
-
     public void initBreak() {
         InitializationBoard.initializeBreak(this);
     }
-
-
     public void resetColideFlags() {
         GameRules.Flags(this);
     }
-
-
-
     public void setPhysicsToBall() {
         Physics.BallPhysics(this);
     }
-
     public void checkDestroyedCount() {
         GameRules.CheckDestroy(this);
     }
-
-
-
-    public void nextLevel() {
-        Updater.NextLevel(this);
-    }
-
-
-
-
+    public void nextLevel() {Updater.NextLevel(this);}
     public void restartGame() {
         GameRules.Restart(this);
     }
-
-
-
     @Override
-    public void onUpdate() {
-        Updater.update(this);
-    }
-
+    public void onUpdate() {Updater.update(this);}
     @Override
     public void onPhysicsUpdate() {
         Physics.PhysicsUpdater(this);

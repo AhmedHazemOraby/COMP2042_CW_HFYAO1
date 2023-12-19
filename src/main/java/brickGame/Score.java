@@ -70,7 +70,7 @@ public class Score {
             Button restart = new Button("Restart");
             restart.setTranslateX(220);
             restart.setTranslateY(300);
-            restart.setOnAction(event -> main.restartGame());
+            restart.setOnAction(event -> GameRules.Restart(main));
 
             main.root.getChildren().addAll(label, restart);
         });
