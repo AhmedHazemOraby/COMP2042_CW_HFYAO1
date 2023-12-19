@@ -14,10 +14,6 @@ public class GameEngine {
         isPaused = !isPaused;
     }
 
-    public boolean isPaused() {
-        return isPaused;
-    }
-
 
     // Set the OnAction for the game engine
     public void setOnAction(OnAction onAction) {

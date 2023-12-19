@@ -3,7 +3,6 @@ package brickGame;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-
 import java.io.Serializable;
 import java.util.Random;
 

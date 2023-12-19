@@ -63,7 +63,6 @@ public class Initialize {
         Scene gameScene = new Scene(main.root, main.sceneWidth, main.sceneHeight);
         gameScene.setOnKeyPressed(main);
 
-        // Add stylesheets if any
         gameScene.getStylesheets().add("style.css");
 
         // Initialize game components

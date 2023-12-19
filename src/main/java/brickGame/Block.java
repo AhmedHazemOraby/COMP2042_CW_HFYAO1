@@ -31,8 +31,6 @@ public class Block implements Serializable {
     public static final int HIT_BOTTOM = 1;
     public static final int HIT_LEFT = 2;
     public static final int HIT_TOP = 3;
-
-    public static int BLOCK_NORMAL = 99;
     public static int BLOCK_CHOCO = 100;
     public static int BLOCK_STAR = 101;
     public static int BLOCK_HEART = 102;

@@ -44,16 +44,8 @@ public class Updater {
                 main.level++;
                 main.levelLabel.setText("Level: " + (main.isEndlessMode ? "Endless" : main.level));
 
-                // Check if the game should continue in endless mode
-                if (main.isEndlessMode && main.heart > 0) {
-                    // Continue the game in endless mode
-                    // Your code to setup the next level in endless mode goes here
-                } else if (main.heart <= 0) {
-                    // Handle game over in endless mode
-                    // Your code to handle game over goes here
-                }
 
-                // Common game state resets and initializations for both modes
+                // Game state resets and initializations for both modes
                 main.isLevelCompleted = false;
                 main.isGoldStatus = false;
                 main.isExistHeartBlock = false;
